@@ -44,6 +44,7 @@ check_untyped_defs = "True"
 warn_return_any = "True"
 warn_unused_ignores = "True"
 show_error_codes = "True"
+disable_error_code = "import-untyped"
 
 
 
@@ -54,6 +55,7 @@ testpaths = ["tests"]
 target-version = "py39"
 line-length = 120
 fix = true
+
 
 
 [tool.ruff.format]
