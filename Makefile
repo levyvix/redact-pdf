@@ -11,15 +11,15 @@ check: ## Run code quality tools.
 	@poetry check --lock
 	@echo "🚀 Linting code: Running pre-commit"
 	@poetry run pre-commit run -a
-	@echo "🚀 Static type checking: Running mypy"
-	@poetry run mypy
+	@echo "🚀 Static type checking"
+	@poetry run pyright --threads 4
 	@echo "🚀 Checking for obsolete dependencies: Running deptry"
 	@poetry run deptry .
 
 .PHONY: test
 test: ## Test the code with pytest
 	@echo "🚀 Testing code: Running pytest"
-	@poetry run pytest --cov --cov-config=pyproject.toml --cov-report=xml --capture=no
+	@poetry run pytest --cov=redact_pdf --cov-config=pyproject.toml --cov-report=html --capture=no
 
 .PHONY: build
 build: clean-build ## Build wheel file using poetry
