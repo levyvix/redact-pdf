@@ -54,3 +54,22 @@ def test_redact_text():
             failed = True
 
     assert not failed
+
+
+def test_redact_all_files_in_dir():
+    base_path = Path(__file__).parent
+    suffix = "redacted"
+    # find all files with suffix and remove
+    for file in base_path.rglob(f"*_{suffix}.pdf"):
+        os.remove(file)
+
+    TEXT_TO_REDACT = "FULANO DA SILVA"
+    text_redactor = TextRedactor()
+    text_redactor.redact_all_files_in_dir(
+        base_path=base_path,
+        text_to_redact=TEXT_TO_REDACT,
+        output_file_suffix=suffix,
+    )
+
+    for file in base_path.rglob(f"_{suffix}.pdf"):
+        assert os.path.exists(file)
