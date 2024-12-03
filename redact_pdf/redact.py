@@ -7,7 +7,12 @@ from loguru import logger
 
 
 class TextRedactor:
-    """Redact a text from a pdf file"""
+    """Redact a text from a pdf file
+
+    Methods:
+    - redact_text(file_path: Path, text_to_redact: str, output_file_name:Path) -> None
+    - redact_all_files_in_dir(self, base_path: Path, text_to_redact: str, output_file_suffix: str) -> None
+    """
 
     def redact_text(self, file_path: Path, text_to_redact: str, output_file_name: Path) -> None:
         """Open the document and redact the text"""
@@ -36,13 +41,9 @@ class TextRedactor:
             self.redact_text(file, text_to_redact, file.with_name(file_stem + f"_{output_file_suffix}.pdf"))
 
 
-def main() -> None:
+if __name__ == "__main__":
+    load_dotenv()
     base_path = Path.joinpath(Path("G:\\"), Path("Meu Drive"), Path("Desafio Detox 15 dias"))
     text_to_redact = os.environ.get("TEXT_TO_REDACT", "")
     text_redactor = TextRedactor()
     text_redactor.redact_all_files_in_dir(base_path, text_to_redact=text_to_redact, output_file_suffix="redacted")
-
-
-if __name__ == "__main__":
-    load_dotenv()
-    main()

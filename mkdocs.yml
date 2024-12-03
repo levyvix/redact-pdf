@@ -5,7 +5,7 @@ site_description: redact a phrase off a pdf file
 site_author: Levy Nunes
 edit_uri: edit/main/docs/
 repo_name: levyvix/redact-pdf
-copyright: Maintained by <a href="https://levyvix.com">Florian</a>.
+copyright: Maintained by <a href="https://www.linkedin.com/in/levyvix/">Levy Nunes</a>.
 
 nav:
   - Home: index.md
