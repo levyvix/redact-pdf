@@ -3,24 +3,32 @@ from pathlib import Path
 
 import fitz  # pymupdf
 from dotenv import load_dotenv
+from loguru import logger
 
 
 class TextRedactor:
     """Redact a text from a pdf file"""
 
-    def redact_text(self, file_path: Path, text_to_redact: str, output_file_name: str):
+    def redact_text(self, file_path: Path, text_to_redact: str, output_file_name: Path):
         """Open the document and redact the text"""
+        logger.info("Opening file...")
         doc = fitz.open(file_path)
+        logger.success("File Opened.")
+
         for i in range(doc.page_count):
+            logger.info("Checking page {}", i + 1)
             page = doc.load_page(i)
             rl = page.search_for(text_to_redact, quads=True)
 
             if rl:  # Ensure results were found before proceeding
+                logger.info("Found text at page {}", i + 1)
                 page.add_redact_annot(rl[0])  # Add redaction annotation for the first match
                 page.apply_redactions()  # Apply redactions
+                logger.success("Applied Redactions.")
 
+        logger.info("Saving file...")
         doc.save(output_file_name, compression_effort=5)
-        print(f"Redacted PDF saved as {output_file_name}")
+        logger.success("Redacted PDF saved as {}", output_file_name)
 
     def redact_all_files_in_dir(self, base_path: Path, text_to_redact: str, output_file_suffix: str):
         for file in base_path.rglob("*.pdf"):
