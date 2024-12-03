@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 
-from PyPDF2 import PdfReader
+from pypdf import PdfReader
 
 from redact_pdf.redact import TextRedactor
 
@@ -20,11 +20,28 @@ def test_create_new_pdf():
 
     text_redactor.redact_text(
         file_path=pdf_file,
-        text_to_redact="XXX",
+        text_to_redact="FULANO DA SILVA",
         output_file_name=save_path,
     )
 
     assert save_path.exists()
+
+
+def test_not_create_new_pdf():
+    pdf_file = Path(__file__).parent / "pdf_test.pdf"
+    save_path = Path(__file__).parent / "pdf_test_redacted.pdf"
+    if save_path.exists():
+        os.remove(save_path)
+
+    text_redactor = TextRedactor()
+
+    text_redactor.redact_text(
+        file_path=pdf_file,
+        text_to_redact="XXX",
+        output_file_name=save_path,
+    )
+
+    assert not save_path.exists()
 
 
 def test_redact_text():

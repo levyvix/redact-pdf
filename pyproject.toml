@@ -24,8 +24,8 @@ mypy = "^1.5.1"
 pre-commit = "^3.4.0"
 tox = "^4.11.1"
 ruff = "^0.8.1"
-pypdf2 = "^3.0.1"
 pyright = "^1.1.389"
+pypdf = "^5.1.0"
 
 
 [tool.poetry.group.docs.dependencies]
