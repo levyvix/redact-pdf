@@ -19,7 +19,7 @@ check: ## Run code quality tools.
 .PHONY: test
 test: ## Test the code with pytest
 	@echo "🚀 Testing code: Running pytest"
-	@poetry run pytest --cov=redact_pdf --cov-config=pyproject.toml --cov-report=html --capture=no
+	@poetry run pytest --cov=redact_pdf --cov-config=pyproject.toml --cov-report=html --capture=no -vvv
 
 .PHONY: build
 build: clean-build ## Build wheel file using poetry
@@ -52,5 +52,9 @@ docs: ## Build and serve the documentation
 .PHONY: help
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
+
+.PHONY: commit
+commit:
+	@cz commit
 
 .DEFAULT_GOAL := help
