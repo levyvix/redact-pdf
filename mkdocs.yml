@@ -1,7 +1,7 @@
 site_name: redact-pdf
 repo_url: https://github.com/levyvix/redact-pdf
 site_url: https://levyvix.github.io/redact-pdf
-site_description: redact a phrase off a pdf file
+site_description: Redact a phrase off a pdf file
 site_author: Levy Nunes
 edit_uri: edit/main/docs/
 repo_name: levyvix/redact-pdf
@@ -9,10 +9,11 @@ copyright: Maintained by <a href="https://www.linkedin.com/in/levyvix/">Levy Nun
 
 nav:
   - Home: index.md
-  - Modules: modules.md
+  - Reference: reference.md
 plugins:
   - search
   - mkdocstrings:
+      default_handler: python
       handlers:
         python:
           setup_commands:
@@ -22,6 +23,9 @@ theme:
   name: material
   feature:
     tabs: true
+  features:
+    - content.code.copy
+    - content.code.annotation
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
@@ -52,3 +56,16 @@ markdown_extensions:
       permalink: true
   - pymdownx.arithmatex:
       generic: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - admonition
+  - pymdownx.arithmatex:
+      generic: true
+  - footnotes
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.mark
+  - attr_list
+  - pymdownx.tasklist
