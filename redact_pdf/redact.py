@@ -23,7 +23,7 @@ class TextRedactor:
             output_file_name (Path): PDF file name (include .pdf) to be saved after redact.
 
         Returns:
-            bool: If successfully redacts the text in pdf
+            bool: If successfully redacts the text in pdf. False if cannot find the text in any page.
 
         Examples:
             >>> from redact_pdf.redact import TextRedactor

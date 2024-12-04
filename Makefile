@@ -19,7 +19,7 @@ check: ## Run code quality tools.
 .PHONY: test
 test: ## Test the code with pytest
 	@echo "🚀 Testing code: Running pytest"
-	@poetry run pytest --cov=redact_pdf --cov-config=pyproject.toml --cov-report=html --capture=no -vvv
+	@poetry run pytest --cov=redact_pdf --cov-config=pyproject.toml --cov-report=html --capture=no -vvv --disable-warnings
 
 .PHONY: build
 build: clean-build ## Build wheel file using poetry

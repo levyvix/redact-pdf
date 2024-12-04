@@ -81,7 +81,10 @@ def test_redact_all_file_in_dir():
         os.remove(file)
 
     # get all pdf files
-    all_pdf_files = list(base_path.rglob("*.pdf"))
+    ignore_folder = "corrupted"
+    all_pdf_files = [
+        arquivo for arquivo in base_path.rglob("*.pdf") if ignore_folder not in arquivo.parts and arquivo.is_file()
+    ]
     print(list(all_pdf_files))
 
     tr = TextRedactor()
@@ -97,3 +100,14 @@ def test_redact_all_file_in_dir():
         checks.append((Path(__file__).parent / Path(file.stem + f"_{suffix}.pdf")).exists())
 
     assert all(checks)
+
+
+def test_corrupted_file():
+    pdf_file = Path(__file__).parent / "corrupted" / "corrupted_pdf_test.pdf"
+    save_path = pdf_file.with_name(pdf_file.stem + "_redacted.pdf")
+    text_to_redact = "FULANO DA SILVA"
+
+    tr = TextRedactor()
+    result = tr.redact_text(pdf_file, text_to_redact=text_to_redact, output_file_name=save_path)
+
+    assert not result
