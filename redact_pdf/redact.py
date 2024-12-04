@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Union
 
 import fitz  # pymupdf
 from loguru import logger
@@ -14,7 +15,7 @@ class TextRedactor:
     - redact_all_files_in_dir(base_path: Path, text_to_redact: str, output_file_suffix: str) -> None
     """
 
-    def redact_text(self, file_path: Path, text_to_redact: str, output_file_name: Path) -> bool:
+    def redact_text(self, file_path: Path, text_to_redact: str, output_file_name: Path) -> Union[bool, None]:
         """Open the document and redact the text
 
         Args:
@@ -23,7 +24,8 @@ class TextRedactor:
             output_file_name (Path): PDF file name (include .pdf) to be saved after redact.
 
         Returns:
-            bool: If successfully redacts the text in pdf
+            bool: If successfully redacts the text in pdf.
+            None: Cannot find text in any page.
 
         Examples:
             >>> from redact_pdf.redact import TextRedactor
@@ -32,13 +34,15 @@ class TextRedactor:
             >>> TEXT_TO_REDACT = "Confidential"
             >>> save_path = Path("path/to/output.pdf")
             >>> tr.redact_text(file_path=pdf_file, text_to_redact=TEXT_TO_REDACT, output_file_name=save_path)
+            True
         """
         doc = None
         try:
             logger.info("Opening file...")
             doc = fitz.open(file_path)
+            logger.success("wFile Opened.")
+
             redacted = False
-            logger.success("File Opened.")
 
             for i in range(doc.page_count):
                 logger.info("Checking page {}", i + 1)
@@ -61,7 +65,7 @@ class TextRedactor:
                 return True
             else:
                 logger.info(f"No text found to redact in: {file_path}")
-                return False
+                return None
         except Exception as e:
             logger.error(f"Error processing {file_path}: {e}")
             return False
@@ -91,16 +95,16 @@ class TextRedactor:
         processed_count = 0
         error_count = 0
         try:
-            for file in base_path.rglob("*.pdf"):
-                try:
-                    file_stem = file.stem
-                    result = self.redact_text(
-                        file, text_to_redact, file.with_name(file_stem + f"_{output_file_suffix}.pdf")
-                    )
-                    if result:
-                        processed_count += 1
-                except Exception as e:
-                    logger.error(f"Failed to process {file}: {e}")
+            pdf_files = list(base_path.rglob("*.pdf"))
+            logger.info(f"Found {len(pdf_files)} PDF files in directory {base_path}")
+
+            for file in pdf_files:
+                output_file = file.with_name(file.stem + f"_{output_file_suffix}.pdf")
+
+                result = self.redact_text(file, text_to_redact, output_file_name=output_file)
+                if result or result is None:
+                    processed_count += 1
+                else:
                     error_count += 1
 
             logger.info(f"Processing complete. Successfully processed: {processed_count}, Errors: {error_count}")
