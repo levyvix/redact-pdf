@@ -96,7 +96,6 @@ def test_redact_all_file_in_dir():
 
     checks = []
     for file in all_pdf_files:
-        # checks.append(Path(file.stem + f"_{suffix}.pdf").exists())
         checks.append((Path(__file__).parent / Path(file.stem + f"_{suffix}.pdf")).exists())
 
     assert all(checks)
@@ -111,3 +110,27 @@ def test_corrupted_file():
     result = tr.redact_text(pdf_file, text_to_redact=text_to_redact, output_file_name=save_path)
 
     assert not result
+
+
+def test_corrupted_file_many():
+    base_path = Path(__file__).parent
+    suffix = "redacted"
+    text_to_redact = "FULANO DA SILVA"
+
+    for file in base_path.rglob(f"*_{suffix}.pdf"):
+        os.remove(file)
+
+    tr = TextRedactor()
+    tr.redact_all_files_in_dir(
+        base_path=base_path,
+        text_to_redact=text_to_redact,
+        output_file_suffix=suffix,
+    )
+
+    all_pdf_files = base_path.rglob("*.pdf")
+    # check the file does not exist
+    checks = []
+    for file in all_pdf_files:
+        checks.append((Path(__file__).parent / Path(file.stem + f"_{suffix}.pdf")).exists())
+
+    assert not all(checks)
