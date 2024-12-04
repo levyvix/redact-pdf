@@ -71,3 +71,29 @@ def test_redact_text():
             failed = True
 
     assert not failed
+
+
+def test_redact_all_file_in_dir():
+    base_path = Path(__file__).parent
+    suffix = "redacted"
+
+    for file in base_path.rglob(f"*_{suffix}.pdf"):
+        os.remove(file)
+
+    # get all pdf files
+    all_pdf_files = list(base_path.rglob("*.pdf"))
+    print(list(all_pdf_files))
+
+    tr = TextRedactor()
+    tr.redact_all_files_in_dir(
+        base_path=base_path,
+        text_to_redact="FULANO DA SILVA",
+        output_file_suffix=suffix,
+    )
+
+    checks = []
+    for file in all_pdf_files:
+        # checks.append(Path(file.stem + f"_{suffix}.pdf").exists())
+        checks.append((Path(__file__).parent / Path(file.stem + f"_{suffix}.pdf")).exists())
+
+    assert all(checks)

@@ -49,7 +49,7 @@ class TextRedactor:
                     logger.info("Found text at page {}", i + 1)
                     redacted = True
                     for redact_area in redaction_list:
-                        page.add_redact_annot(redact_area)
+                        page.add_redact_annot(redact_area, "REDACTED")
                         page.apply_redactions()  # Apply redactions
                     logger.success("Applied Redactions.")
 
@@ -75,7 +75,7 @@ class TextRedactor:
         Args:
             base_path (Path): Base directory to find all *.pdf files (recursively)
             text_to_redact (str): Text or phrase to be redacted in every page of pdf file.
-            output_file_suffix (Path): Suffix to append to original file name to be saved.
+            output_file_suffix (str): Suffix to append to original file name to be saved.
 
         Returns:
             None
