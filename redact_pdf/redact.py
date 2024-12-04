@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Union
 
 import fitz  # pymupdf
 from loguru import logger
@@ -14,7 +15,7 @@ class TextRedactor:
     - redact_all_files_in_dir(base_path: Path, text_to_redact: str, output_file_suffix: str) -> None
     """
 
-    def redact_text(self, file_path: Path, text_to_redact: str, output_file_name: Path) -> bool | None:
+    def redact_text(self, file_path: Path, text_to_redact: str, output_file_name: Path) -> Union[bool, None]:
         """Open the document and redact the text
 
         Args:
