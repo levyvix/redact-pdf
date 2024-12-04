@@ -81,7 +81,8 @@ def test_redact_all_file_in_dir():
         os.remove(file)
 
     # get all pdf files
-    all_pdf_files = base_path.rglob("*.pdf")
+    all_pdf_files = list(base_path.rglob("*.pdf"))
+    print(list(all_pdf_files))
 
     tr = TextRedactor()
     tr.redact_all_files_in_dir(
@@ -92,6 +93,7 @@ def test_redact_all_file_in_dir():
 
     checks = []
     for file in all_pdf_files:
-        checks.append(Path(file.stem + f"_{suffix}.pdf").exists())
+        # checks.append(Path(file.stem + f"_{suffix}.pdf").exists())
+        checks.append((Path(__file__).parent / Path(file.stem + f"_{suffix}.pdf")).exists())
 
     assert all(checks)
